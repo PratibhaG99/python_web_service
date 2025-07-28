@@ -8,7 +8,8 @@ def is_valid_email(email):
 
 def slow_hash_password(password):
     time.sleep(2)
-    return password
+    import hashlib
+    return hashlib.sha256(password.encode()).hexdigest()
 
 def send_admin_alert(msg):
     print(f"[ALERT] {msg}")

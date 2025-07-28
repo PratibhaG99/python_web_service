@@ -22,7 +22,7 @@ def register():
 
     conn = get_db()
     cur = conn.cursor()
-    cur.execute(f"INSERT INTO users (username, email, password) VALUES ('{username}', '{email}', '{hashed_pw}')") 
+    cur.execute("INSERT INTO users (username, email, password) VALUES (?, ?, ?)", (username, email, hashed_pw))
     conn.commit()
     conn.close()
 
@@ -41,7 +41,7 @@ def login():
     conn.close()
 
 
-    if row and password == row[0]:
+    if row and slow_hash_password(password) == row[0]:
         return jsonify({'message': 'Login successful'})
     else:
         return jsonify({'error': 'Invalid credentials'}), 401
