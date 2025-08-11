@@ -1,0 +1,23 @@
+name: Claude Code PR Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened] # When a PR is created or updated
+
+jobs:
+  claude-review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Claude Code Action Official
+        uses: anthropics/claude-code-action@beta
+        with:
+          ANTHROPIC_BASE_URL: ${{ secrets.LLM_GATEWAY_URL }}
+          ANTHROPIC_AUTH_TOKEN: ${{ secrets.LLM_GATEWAY_TOKEN }}
