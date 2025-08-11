@@ -4,6 +4,10 @@ on:
   pull_request:
     types: [opened, synchronize, reopened] # When a PR is created or updated
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   claude-review:
     runs-on: ubuntu-latest
