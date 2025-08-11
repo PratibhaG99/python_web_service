@@ -22,3 +22,5 @@ jobs:
         with:
           ANTHROPIC_BASE_URL: ${{ secrets.LLM_GATEWAY_URL }}
           ANTHROPIC_AUTH_TOKEN: ${{ secrets.LLM_GATEWAY_TOKEN }}
+          direct_prompt: |
+            Review this PR for code quality, bugs, and standards; post your feedback as a detailed PR comment.
