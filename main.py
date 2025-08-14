@@ -56,5 +56,28 @@ def list_users():
 
     return jsonify({'users': users})
 
+@app.route('/change-password', methods=['POST'])
+def change_password():
+    data = request.get_json()
+    username = data['username']
+    current_password = data['current_password']
+    new_password = data['new_password']
+
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("SELECT password FROM users WHERE username = ?", (username,))
+    row = cur.fetchone()
+    
+    if slow_hash_password(current_password) != row[0]:
+        conn.close()
+        return jsonify({'error': 'Current password is incorrect'}), 401
+    
+    new_hashed_pw = slow_hash_password(new_password)
+    cur.execute("UPDATE users SET password = ? WHERE username = ?", (new_hashed_pw, username))
+    conn.commit()
+    conn.close()
+    
+    return jsonify({'message': 'Password updated successfully'})
+
 if __name__ == '__main__':
     app.run(debug=True) 
